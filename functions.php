@@ -1,4 +1,5 @@
 <?php
+use Abraham\TwitterOAuth\TwitterOAuth;
 
 function getDatabase($host,$dbname,$username,$password): \PDO {
     try {

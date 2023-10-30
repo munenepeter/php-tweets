@@ -1,4 +1,8 @@
 <?php
+
+require "vendor/autoload.php";
+require "functions.php";
+
 // Get the username from the URL parameter
 $url = $_GET['url'];
 
