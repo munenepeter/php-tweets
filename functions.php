@@ -40,13 +40,22 @@ function getUserTweets($username) : array {
     // You need to use your Twitter Developer credentials here
 
     // Create an OAuth 1.0a client and make the API request
-    $client = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
-    $tweets = $client->get('statuses/user_timeline', ['screen_name' => $username]);
+    $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
+   
+    $tweets = $connection->get("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=".$username."&count=30");
+
+
+   
+    
+
+    print_r($tweets);
+
+
 
     // Check for errors in the API response
-    if (!empty($client->getLastHttpCode()) && $client->getLastHttpCode() !== 200) {
-        http_response_code($client->getLastHttpCode());
-        echo "Tweets: Could not get tweets at this time";
+    if (!empty($connection->getLastHttpCode()) && $connection->getLastHttpCode() !== 200) {
+        http_response_code($connection->getLastHttpCode());
+        echo "Tweets: Could not get tweets at this time, E" . $connection->getLastHttpCode();
         return [];
     }
     http_response_code(200);

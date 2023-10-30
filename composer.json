@@ -1,5 +1,5 @@
 {
     "require": {
-        "abraham/twitteroauth": "^6.2"
+        "noweh/twitter-api-v2-php": "^3.4"
     }
 }
