@@ -3,11 +3,13 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 function getDatabase($host,$dbname,$username,$password): \PDO {
     try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $pdo;
+        // $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // return $pdo;
+
+        return new \PDO("sqlite:db.sqlite");
     } catch (PDOException $e) {
-        die("Database connection failed: " . $e->getMessage());
+        die("Database: connection failed: " . $e->getMessage());
     }
 }
 
@@ -16,7 +18,7 @@ function getTwitterUsername($url) : string {
 
     // Check if the URL is not from Twitter or doesn't contain a path
     if (!isset($urlParts['host']) || $urlParts['host'] != 'twitter.com' || !isset($urlParts['path'])) {
-        echo "Invalid Twitter URL";
+        echo "URL: Invalid Twitter URL";
         return '';
     }
 
@@ -24,7 +26,7 @@ function getTwitterUsername($url) : string {
 
     // Check if there's no username in the path
     if (!isset($pathSegments[0])) {
-        echo "Invalid Twitter URL - No username found";
+        echo "URL: Invalid Twitter URL - No username found";
         return '';
     }
 
@@ -44,7 +46,7 @@ function getUserTweets($username) : array {
     // Check for errors in the API response
     if (!empty($client->getLastHttpCode()) && $client->getLastHttpCode() !== 200) {
         http_response_code($client->getLastHttpCode());
-        echo "Could not get tweets at this time";
+        echo "Tweets: Could not get tweets at this time";
         return [];
     }
     http_response_code(200);
@@ -52,11 +54,12 @@ function getUserTweets($username) : array {
 }
 
 function saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType) : bool {
-    $sql = "INSERT INTO twitter_posts (username, description, post_date, media_path, media_type) 
-    VALUES (:username, :description, :postDate, :mediaPath, :mediaType)";
+    $sql = "INSERT INTO twitter_posts (`url`,`username`, `description`, `date`, `media_path`, `media_type`) 
+    VALUES (:url, :username, :description, :date, :mediaPath, :mediaType)";
 
     // Prepare and execute the SQL statement
     $stmt = $dbConnection->prepare($sql);
+    $stmt->bindParam(':url', 'https://twitter.com/'.$username);
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':description', $description);
     $stmt->bindParam(':postDate', $postDate);
@@ -67,9 +70,15 @@ function saveTweets($dbConnection, $username, $description, $postDate, $mediaPat
   
 }
 
-function saveTweetMedia(string $mediaUrl): string {
-    $mediaPath = 'media/' . basename($mediaUrl);
-    file_put_contents($mediaPath, file_get_contents($mediaUrl));
-
+function saveTweetMedia(string $path, string $mediaUrl) {
+    if ($mediaUrl === "") {
+        return;
+    }
+    
+    if(file_put_contents($path, file_get_contents($mediaUrl)) === false){
+        echo "Media: Could not save media";
+        return;
+    }
+   
     return $mediaPath;
 }
