@@ -1,7 +1,16 @@
 <?php
-use Abraham\TwitterOAuth\TwitterOAuth;
+use Noweh\TwitterApi\Client;
 
-function getDatabase($host,$dbname,$username,$password): \PDO {
+$settings = [];
+$settings['account_id'] = ACCOUNT_ID;
+$settings['access_token'] = ACCESS_TOKEN;
+$settings['access_token_secret'] = ACCESS_TOKEN_SECRET;
+$settings['consumer_key'] = CONSUMER_KEY;
+$settings['consumer_secret'] = CONSUMER_SECRET;
+$settings['bearer_token'] = BEARER_TOKEN;
+
+
+function getDatabase(string $host,string $dbname,string $username,string $password): \PDO {
     try {
         // $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
         // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -13,7 +22,7 @@ function getDatabase($host,$dbname,$username,$password): \PDO {
     }
 }
 
-function getTwitterUsername($url) : string {
+function getTwitterUsername(string $url) : string {
     $urlParts = parse_url($url);
 
     // Check if the URL is not from Twitter or doesn't contain a path
@@ -33,33 +42,43 @@ function getTwitterUsername($url) : string {
     // Extract and return the username
     return $pathSegments[0];
 }
+function getUserID(string $username) :string{
 
+    $userQueryByName = getTwitterClient()->userLookup()
+    ->findByIdOrUsername($username, \Noweh\TwitterApi\UserLookup::MODES['USERNAME'])
+    ->performRequest();
 
-function getUserTweets($username) : array {
-    // Set up Twitter API OAuth 1.0a authentication
-    // You need to use your Twitter Developer credentials here
-
-    // Create an OAuth 1.0a client and make the API request
-    $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
-   
-    $tweets = $connection->get("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=".$username."&count=30");
-
-
-   
+    //response
+     /*
+        "data": {
+            "id": "2244994945",
+            "name": "Twitter Dev",
+            "username": "TwitterDev"
+            }
+     */
     
+    return $userQueryByName->data->id;
+}
 
-    print_r($tweets);
+function getTwitterClient() : Client{
+    global $settings;
+    return new Client($settings);
+}
+
+function getUserTweets($username) : object {
+
+   //only thing i can do for now (free plan)
+   $myTweets = getTwitterClient()->userMeLookup()->performRequest();
+   //print_r((array)$myTweets);
 
 
+   //if paid access(basic)
 
-    // Check for errors in the API response
-    if (!empty($connection->getLastHttpCode()) && $connection->getLastHttpCode() !== 200) {
-        http_response_code($connection->getLastHttpCode());
-        echo "Tweets: Could not get tweets at this time, E" . $connection->getLastHttpCode();
-        return [];
-    }
-    http_response_code(200);
-    return $tweets;
+   /*
+   $userID = getUserID($username);
+   $usersTweets = getTwitterClient()->timeline()->getReverseChronological()->performRequest();
+   */
+  return $myTweets;
 }
 
 function saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType) : bool {

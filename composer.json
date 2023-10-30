@@ -1,5 +1,6 @@
 {
     "require": {
-        "noweh/twitter-api-v2-php": "^3.4"
+        "noweh/twitter-api-v2-php": "^3.4",
+        "ferrysyahrinal/twifer": "^2.2"
     }
 }

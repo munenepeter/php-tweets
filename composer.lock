@@ -4,8 +4,45 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "698c72f1ec2ab721f1181961436df7e4",
+    "content-hash": "8bc2b868a68eea286ce2e91d3e552227",
     "packages": [
+        {
+            "name": "ferrysyahrinal/twifer",
+            "version": "v2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ferrysyahrinal/twifer.git",
+                "reference": "549354bc87944160450222aaea0613f53a78dd40"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ferrysyahrinal/twifer/zipball/549354bc87944160450222aaea0613f53a78dd40",
+                "reference": "549354bc87944160450222aaea0613f53a78dd40",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Twifer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ferry Syahrinal",
+                    "email": "ferrysyahrinal2@gmail.com"
+                }
+            ],
+            "description": "Simple PHP Library for Twitter REST API",
+            "support": {
+                "issues": "https://github.com/ferrysyahrinal/twifer/issues",
+                "source": "https://github.com/ferrysyahrinal/twifer/tree/v2.2"
+            },
+            "time": "2022-04-14T21:09:27+00:00"
+        },
         {
             "name": "guzzlehttp/guzzle",
             "version": "7.8.0",
