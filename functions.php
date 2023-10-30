@@ -11,26 +11,25 @@ function getDatabase($host,$dbname,$username,$password): \PDO {
     }
 }
 
-function getTwitterUsername($url) : string|void {
+function getTwitterUsername($url) : string {
     $urlParts = parse_url($url);
 
     // Check if the URL is not from Twitter or doesn't contain a path
     if (!isset($urlParts['host']) || $urlParts['host'] != 'twitter.com' || !isset($urlParts['path'])) {
         echo "Invalid Twitter URL";
-        return;
+        return '';
     }
 
     $pathSegments = explode('/', trim($urlParts['path'], '/'));
 
     // Check if there's no username in the path
-    if (!isset($pathSegments[1])) {
+    if (!isset($pathSegments[0])) {
         echo "Invalid Twitter URL - No username found";
-        return;
+        return '';
     }
 
     // Extract and return the username
-    $username = $pathSegments[1];
-    return $username;
+    return $pathSegments[0];
 }
 
 
@@ -44,10 +43,11 @@ function getUserTweets($username) : array {
 
     // Check for errors in the API response
     if (!empty($client->getLastHttpCode()) && $client->getLastHttpCode() !== 200) {
-        // Handle API error
+        http_response_code($client->getLastHttpCode());
+        echo "Could not get tweets at this time";
         return [];
     }
-
+    http_response_code(200);
     return $tweets;
 }
 

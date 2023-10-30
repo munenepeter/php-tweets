@@ -1,6 +1,7 @@
 <?php
 
 require "vendor/autoload.php";
+include_once "config.php";
 require "functions.php";
 
 // Get the username from the URL parameter
@@ -15,13 +16,7 @@ $tweets = getUserTweets($username);
 /*
 SET UP DB CONNECTION
 */
-
-$host = "hostname";
-$dbname = "database_name";
-$username = "username";
-$password = "password";
-
-$dbConnection = getDatabase($host,$dbname,$username,$password);
+$dbConnection = getDatabase(DB_HOST,DB_NAME,DB_USERNAME,DB_PASSWORD);
 
 foreach ($tweets as $tweet) {
   
@@ -34,9 +29,9 @@ foreach ($tweets as $tweet) {
         $mediaType = $media['type'];
 
         // Download the media file and store it on disk
-        $mediaPath = saveTweetMedia(string $mediaUrl);
+        $mediaPath = saveTweetMedia($mediaUrl);
         //save tweet
-        saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType)
+        saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType);
        
     }
 }
