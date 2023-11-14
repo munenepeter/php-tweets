@@ -28,9 +28,8 @@ foreach ($tweets as $tweet) {
         // Download the media file and store it on disk
         $path = 'media/' . basename($mediaUrl);
         $mediaPath = saveTweetMedia($path, $mediaUrl);
-        //save tweet
-        saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType);
-       
     }
+         //save tweet
+    saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType);
 }
 

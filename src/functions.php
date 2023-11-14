@@ -52,9 +52,9 @@ function saveTweets($dbConnection, $username, $description, $postDate, $mediaPat
   
 }
 
-function saveTweetMedia(string $path, string $mediaUrl) {
+function saveTweetMedia(string $path, string $mediaUrl = "") {
     if ($mediaUrl === "") {
-        return;
+        return false;
     }
     
     if(file_put_contents($path, file_get_contents($mediaUrl)) === false){
