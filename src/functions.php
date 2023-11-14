@@ -1,17 +1,6 @@
 <?php
 
 
-$settings = [];
-$settings['account_id'] = ACCOUNT_ID;
-$settings['access_token'] = ACCESS_TOKEN;
-$settings['access_token_secret'] = ACCESS_TOKEN_SECRET;
-$settings['consumer_key'] = CONSUMER_KEY;
-$settings['consumer_secret'] = CONSUMER_SECRET;
-$settings['bearer_token'] = BEARER_TOKEN;
-
-
-
-
 function getTwitterUsername(string $url) : string {
     $urlParts = parse_url($url);
 

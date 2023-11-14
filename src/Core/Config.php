@@ -6,7 +6,7 @@ use App\Core\Cache;
 
 class Config {
     
-    protected static $env_file = __DIR__'\..\.env';
+    protected static $env_file = __DIR__.'/../.env';
     protected static $cache_key = 'config_cache';
 
 
@@ -30,7 +30,7 @@ class Config {
         //check if the file exists & is readable
         if(!is_readable(self::$env_file)){
             //if not available, copy the ENV.EXAMPLE
-            if(!copy(from: __DIR__'/../.env.example', to: self::$env_file)){
+            if(!copy(from: __DIR__.'/../.env.example', to: self::$env_file)){
                 return false;
             } 
         }
