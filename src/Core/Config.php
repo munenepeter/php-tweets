@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Core;
 
-use App\Cache;
+use App\Core\Cache;
 
 class Config {
+    
     protected static $env_file = __DIR__'\..\.env';
     protected static $cache_key = 'config_cache';
 
