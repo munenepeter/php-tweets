@@ -2,14 +2,24 @@
 
 require "src/bootstrap.php";
 
+use App\Tweet;
+
 
 // Get the username from the URL parameter
 $url = $_GET['url'];
 
-//get username from url
-$username = getTwitterUsername($url);
 
-$tweets = Tweet::getTweets();
+
+try {
+   //get username from url
+   $username = getTwitterUsername($url);
+   $tweets = Tweet::getTweets($username);
+
+} catch (\Exception $e) {
+   //Instead of catching the exception here we redirect the same to our main error handler
+   abort($e->getMessage(), $e->getCode());
+}
+
 
 echo "Viewing {$username}'s tweets as seen from X";
 

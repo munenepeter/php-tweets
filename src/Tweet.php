@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tweet;
+namespace App;
 
 class Tweet {
 
-    private static $twitterApiClient = null;s
+    private static $twitterApiClient = null;
     private static $cache_key = "tweets_cache";
 
     private function __construct($client, $credentials) {
@@ -15,19 +15,22 @@ class Tweet {
         if (static::$twitterApiClient === null) {
             new self($client, $credentials);
         }
-
         return static::$twitterApiClient;
     }
 
     private static function getRawTweets(string $username): array {
-        //only thing i can do for now (free plan)
-        $myTweets = static::$twitterApiClient->userMeLookup()->performRequest();
-        //if paid access(basic)
-        /*
-        $userID = getUserID($username);
-        $usersTweets = static::$twitterApiClient->timeline()->getReverseChronological()->performRequest();
-        */
-        return $myTweets;
+       try{
+            //only thing i can do for now (free plan)
+            $myTweets = static::$twitterApiClient->userMeLookup()->performRequest();
+            //if paid access(basic)
+            /*
+            $userID = getUserID($username);
+            $usersTweets = static::$twitterApiClient->timeline()->getReverseChronological()->performRequest();
+            */
+            return $myTweets;
+       }catch(\Exception $e){
+           throw new \Exception($e->getMessage(), $e->getCode());   
+       }
     }
 
     public static function getTweets(string $username) : array {
