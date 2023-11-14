@@ -1,8 +1,6 @@
 <?php
 
-require "vendor/autoload.php";
-require_once "config.php";
-require "functions.php";
+require "src/bootstrap.php";
 
 
 // Get the username from the URL parameter
