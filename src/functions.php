@@ -1,5 +1,5 @@
 <?php
-use Noweh\TwitterApi\Client;
+
 
 $settings = [];
 $settings['account_id'] = ACCOUNT_ID;

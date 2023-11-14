@@ -5,10 +5,18 @@ namespace App\Tweet;
 
 class Tweet{
 
-    private static $twitterApiClient = null;
+    rivate static $twitterApiClient = null;
 
-    public static function __construct($client, $credentials) {
-        static::$twitterApiClient = $client;
+    private function __construct($client, $credentials) {
+        static::$twitterApiClient = new $client($credentials);
+    }
+
+    public static function getInstance($client, $credentials) {
+        if (static::$twitterApiClient === null) {
+            new self($client, $credentials);
+        }
+
+        return static::$twitterApiClient;
     }
 
     private static function getRawTweets(string $username): array {
