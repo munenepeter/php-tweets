@@ -2,8 +2,7 @@
 
 namespace App\Tweet;
 
-
-class Tweet{
+class Tweet {
 
     rivate static $twitterApiClient = null;
 
