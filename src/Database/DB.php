@@ -31,9 +31,9 @@ class DB {
         try {
             $statement = $this->pdo->prepare($sql);
             $statement->execute($parameters);
+            return true;
         }
         catch(\Exception $e) {
-
             throw new \Exception("Database: Error with Query" . $e->getCode());
         }
     }
