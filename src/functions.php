@@ -44,41 +44,12 @@ function getTwitterUsername(string $url) : string {
 }
 function getUserID(string $username) :string{
 
-    $userQueryByName = getTwitterClient()->userLookup()
-    ->findByIdOrUsername($username, \Noweh\TwitterApi\UserLookup::MODES['USERNAME'])
-    ->performRequest();
 
-    //response
-     /*
-        "data": {
-            "id": "2244994945",
-            "name": "Twitter Dev",
-            "username": "TwitterDev"
-            }
-     */
-    
-    return $userQueryByName->data->id;
 }
 
 function getTwitterClient() : Client{
     global $settings;
     return new Client($settings);
-}
-
-function getUserTweets($username) : object {
-
-   //only thing i can do for now (free plan)
-   $myTweets = getTwitterClient()->userMeLookup()->performRequest();
-   //print_r((array)$myTweets);
-
-
-   //if paid access(basic)
-
-   /*
-   $userID = getUserID($username);
-   $usersTweets = getTwitterClient()->timeline()->getReverseChronological()->performRequest();
-   */
-  return $myTweets;
 }
 
 function saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType) : bool {
