@@ -10,17 +10,7 @@ $settings['consumer_secret'] = CONSUMER_SECRET;
 $settings['bearer_token'] = BEARER_TOKEN;
 
 
-function getDatabase(string $host,string $dbname,string $username,string $password): \PDO {
-    try {
-        // $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-        // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        // return $pdo;
 
-        return new \PDO("sqlite:db.sqlite");
-    } catch (PDOException $e) {
-        die("Database: connection failed: " . $e->getMessage());
-    }
-}
 
 function getTwitterUsername(string $url) : string {
     $urlParts = parse_url($url);
@@ -42,15 +32,8 @@ function getTwitterUsername(string $url) : string {
     // Extract and return the username
     return $pathSegments[0];
 }
-function getUserID(string $username) :string{
 
 
-}
-
-function getTwitterClient() : Client{
-    global $settings;
-    return new Client($settings);
-}
 
 function saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType) : bool {
     $sql = "INSERT INTO twitter_posts (`url`,`username`, `description`, `date`, `media_path`, `media_type`) 
