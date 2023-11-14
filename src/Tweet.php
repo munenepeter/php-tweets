@@ -4,7 +4,8 @@ namespace App\Tweet;
 
 class Tweet {
 
-    rivate static $twitterApiClient = null;
+    private static $twitterApiClient = null;s
+    private static $cache_key = "tweets_cache";
 
     private function __construct($client, $credentials) {
         static::$twitterApiClient = new $client($credentials);
@@ -76,6 +77,17 @@ class Tweet {
     } 
 
     public static function getSavedTweets(): array {
-        return $database->selectAll();
+         // Check if cached config exists
+         $cachedTweets = Cache::get(self::$cache_key);
+         if ($cachedTweets !== null) {
+             return $cachedTweets;
+         }
+         // If not, load and parse the configuration file
+         $savedTweets = $database->selectAll();
+ 
+         // Cache the config for future use
+         Cache::put(self::$cache_key, $savedTweets);
+ 
+         return $savedTweets;
     }
 }
