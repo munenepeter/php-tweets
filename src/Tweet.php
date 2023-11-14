@@ -7,17 +7,17 @@ class Tweet{
 
     private static $twitterApiClient = null;
 
-    public function __construct($client) {
-        $this->$twitterApiClient = $client;
+    public static function __construct($client, $credentials) {
+        static::$twitterApiClient = $client;
     }
 
     private static function getRawTweets(string $username): array {
         //only thing i can do for now (free plan)
-        $myTweets = getTwitterClient()->userMeLookup()->performRequest();
+        $myTweets = static::$twitterApiClient->userMeLookup()->performRequest();
         //if paid access(basic)
         /*
         $userID = getUserID($username);
-        $usersTweets = getTwitterClient()->timeline()->getReverseChronological()->performRequest();
+        $usersTweets = static::$twitterApiClient->timeline()->getReverseChronological()->performRequest();
         */
         return $myTweets;
     }
@@ -51,7 +51,7 @@ class Tweet{
 
     }
     private static function getUserID(string $username) :string {
-        $userQueryByName = getTwitterClient()->userLookup()
+        $userQueryByName = static::$twitterApiClient->userLookup()
                             ->findByIdOrUsername($username, \Noweh\TwitterApi\UserLookup::MODES['USERNAME'])
                             ->performRequest();
            

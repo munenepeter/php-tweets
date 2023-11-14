@@ -33,25 +33,6 @@ function getTwitterUsername(string $url) : string {
     return $pathSegments[0];
 }
 
-
-
-function saveTweets($dbConnection, $username, $description, $postDate, $mediaPath, $mediaType) : bool {
-    $sql = "INSERT INTO twitter_posts (`url`,`username`, `description`, `date`, `media_path`, `media_type`) 
-    VALUES (:url, :username, :description, :date, :mediaPath, :mediaType)";
-
-    // Prepare and execute the SQL statement
-    $stmt = $dbConnection->prepare($sql);
-    $stmt->bindParam(':url', 'https://twitter.com/'.$username);
-    $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':postDate', $postDate);
-    $stmt->bindParam(':mediaPath', $mediaPath);
-    $stmt->bindParam(':mediaType', $mediaType);
-
-   return $stmt->execute();
-  
-}
-
 function saveTweetMedia(string $path, string $mediaUrl = "") {
     if ($mediaUrl === "") {
         return false;
